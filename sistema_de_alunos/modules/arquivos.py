@@ -1,20 +1,33 @@
 from modules.operacoes import *
-
 import pandas as pd
 import os
 
-def CreateDF(data):
-    #Cria dataframe vazio
-    ncolumns = ['Matrícula', 'Nome', 'Rua', 'Numero', 'Bairro', 'Cidade', 'UF', 'Telefone', 'E-mail']
-    df = pd.DataFrame(columns = ncolumns)
+caminhoArq = './data'
+arq = 'info_alunos.csv'
+ncolumns = ['Matrícula', 'Nome', 'Rua', 'Numero', 'Bairro', 'Cidade', 'UF', 'Telefone', 'E-mail']
 
-    #Preenche o dataframe com as informacoes do user
-    df_info = pd.DataFrame(data, index = [(len(df) + 1)])
+#passei pra ca pq ela nn funcionava de jeito nenhum la
+def AutoIncrementMatricula(df):
+    base = 90401201
+    if df.empty:
+        return base
+
+    if 'Matrícula' in df.columns and not df['Matrícula'].empty:
+        max_matricula = df['Matrícula'].max()
+        return max_matricula + 1
+    else:
+        return base
+
+
+def CreateDF(data):
+    #df = carrega()  
+    df_info = pd.DataFrame([data])
     df_info['Matrícula'] = AutoIncrementMatricula(df)
-    df = pd.concat([df , df_info])
+    df = pd.concat([df, df_info], ignore_index=True)
 
     print(df)
-    SaveDF(df) #Chama a funcao para salvar
+    SaveDF(df)
+    return df
 
 def SaveDF(df): #Salva o df em arquivo csv
     dir = './data'
