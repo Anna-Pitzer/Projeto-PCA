@@ -22,18 +22,19 @@ def AutoIncrementMatricula(df): #Essa funcao faz a configuração automatica da 
 def ReadInfo(op): #Le os dados de acordo com a opcao escolhida pelo user
     match (op):
         case 1: # Case 1: Le todas as informacoes do aluno e armazena em um dicionario para depois coloca-lo no dataframe
-            print("Insira os dados: ")
-            nome = input("Nome: ")
-            rua = input("Rua: ")
-            n = int (input("Número: "))
-            bairro = input("Bairro: ")
-            cidade = input("Cidade: ")
-            uf = input("UF: ")
-            telefone = input("Telefone: ")
-            email = input("E-mail: ")
+            data = {'Nome' : "", 'Rua' : "", 'Numero' : "", 'Bairro' : "", 
+                    'Cidade' : "", 'UF' : "", 'Telefone' : "", 'E-mail': ""}
             
-            data = {'Nome' : nome, 'Rua' : rua, 'Numero' : n, 'Bairro' : bairro, 
-                    'Cidade' : cidade, 'UF' : uf, 'Telefone' : telefone, 'E-mail': email}
+            print("Insira os dados: ")
+            data['Nome'] = input("Nome: ")
+            data['Rua'] = input("Rua: ")
+            data['Numero'] = int (input("Número: "))
+            data['Bairro'] = input("Bairro: ")
+            data['Cidade'] = input("Cidade: ")
+            data['UF'] = input("UF: ")
+            data['Telefone'] = input("Telefone: ")
+            data['E-mail'] = input("E-mail: ")
+            
             return data
         
         case _: #Case default caso a opcao seja invalida
