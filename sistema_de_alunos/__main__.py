@@ -9,18 +9,19 @@ def saudacao():
     print("\nSeja bem-vindo ao sistema de alunos!")
 
 def menu():
-    #df = carrega()
-    
+    df = LoadDF()
     while True:
-        edit = False
-        op = Options(edit)
-
+        op = Options(False)
         match op:
             case 1:
                 data = ReadInfo(op)
-                df = CreateDF(data)
+                df = AddDF(data)
             case 2:
-                pesquisar(df)
+                aluno = Search(df)
+                if aluno is not None:
+                    op = Options(True)
+                    if op == 1:
+                        Edit(aluno)    
             case 3:
                 SaveDF(df)
                 sys.exit(0)

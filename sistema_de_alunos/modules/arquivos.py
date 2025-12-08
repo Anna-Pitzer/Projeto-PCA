@@ -2,7 +2,6 @@ from modules.operacoes import *
 import pandas as pd
 import os
 
-ncolumns = ['Matrícula', 'Nome', 'Rua', 'Numero', 'Bairro', 'Cidade', 'UF', 'Telefone', 'E-mail']
 
 def AutoIncrementMatricula(df):
     base = 90401200
@@ -16,7 +15,12 @@ def AutoIncrementMatricula(df):
         return base
 
 
-def CreateDF(data):
+def CreateDF():
+    ncolumns = ['Matrícula', 'Nome', 'Rua', 'Numero', 'Bairro', 'Cidade', 'UF', 'Telefone', 'E-mail']
+    df = pd.DataFrame(columns = ncolumns)
+    SaveDF(df)
+    
+def AddDF(data):
     if CheckDF:
         df = ReadDF()
         df_info = pd.DataFrame([data])
@@ -31,6 +35,7 @@ def CreateDF(data):
     return df
 
 def ReadDF():
+
     path = './data/info_alunos.csv'
     df = pd.read_csv(path)
     return df
@@ -52,3 +57,14 @@ def CheckDF():
         return True
     else: 
         return False
+    
+def LoadDF():
+    b = CheckDF()
+    if b:
+        df = ReadDF()
+    else:
+        print("Arquivo não encontrado. Criando arquivo csv...")
+        CreateDF()
+        df = ReadDF()
+
+    return df
