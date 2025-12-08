@@ -1,3 +1,15 @@
+"""
+Módulo: arquivos.py
+Descrição: Gerencia um cadastro de alunos: criação, leitura, adição e armazenamento em CSV.
+Autor: Arthur Torres e Maria Anna Pitzer
+Data de criação: 04/12/2025
+
+Funções principais: O módulo gerencia o arquivo de alunos. Ele possui uma função que calcula automaticamente a próxima matrícula disponível, outra que cria o arquivo CSV inicial, uma que adiciona novos alunos ao cadastro, outra que lê o CSV, outra que salva o DataFrame no arquivo, uma que verifica se o CSV existe e, por fim, uma função que carrega os dados existentes ou cria o arquivo caso ele ainda não exista.
+
+Observações:
+  O arquivo de dados é armazenado em './data/info_alunos.csv'. As colunas padrão são: Matrícula, Nome, Rua, Numero, Bairro, Cidade, UF, Telefone, E-mail e a matrícula inicial padrão: 90401200.
+"""
+
 from modules.operacoes import *
 import pandas as pd
 import os
