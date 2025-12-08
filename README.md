@@ -25,7 +25,7 @@
   <li>Pandas</li>
   <li>Git (Controle de versão)</li>
 </ul></p>
-<h3>Como executar:</h3>
+<h2>Como executar:</h2>
 <p>Baixe o repositório e extraia os arquivos. No terminal, navegue até a pasta  <code>sistema_de_alunos</code> e execute: pip install pandas, espere que o download seja terminado e execute: python __main__.py após isso o sistema iniciará.</p>
 
 <h2>Membros do projeto</h2>
