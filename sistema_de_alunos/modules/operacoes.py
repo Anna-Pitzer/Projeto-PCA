@@ -37,10 +37,6 @@ def Search(df): #função para pesquisar os dados
     if resultado.empty: #se não tiver avisa
         print("Nenhum aluno encontrado.") 
         return None #retorna vazio
-    
-    pd.set_option('display.max_columns', None) 
-    pd.set_option('display.width', None)
-    pd.set_option('display.max_colwidth', None)
 
     print("=====================================================================================================================")
     print("                                            RESULTADO DA PESQUISA                                                    ")
