@@ -16,21 +16,21 @@ def saudacao():
     print("===============================================================================================")
     print("\nSeja bem-vindo ao sistema de alunos!")
 
-def menu():
-    df = LoadDF()
-    while True:
-        op = Options()
-        match op:
-            case 1:
-                data = ReadInfo()
+def menu(): #Funcao principal do sistema
+    df = LoadDF() #Chama a funcao para carregar o Df para n ocorrer falhas
+    while True: #Loop infinito até o usuario encerrar 
+        op = Options() #Pega a opcao escolhida pelo usuario
+        match op: #Determina o que ocorrera de acordo com a escolha
+            case 1: #---- Inserir Dados ----
+                data = ReadInfo() 
                 df = AddDF(data)
-            case 2:
+            case 2: #---- Pesquisar Dados ----
                 Search(df)
-            case 3:
+            case 3: #---- Encerrar Programa ----
                 SaveDF(df)
                 sys.exit(0)
-            case _:
-                print("Opção inválida! Escolha outra")
+            case _: #---- Caso a opcao escolhida esteja incorreta
+                print("Opção inválida! Escolha outra.")
 
 if __name__ == '__main__':
     saudacao()

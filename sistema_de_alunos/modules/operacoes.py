@@ -10,40 +10,35 @@ Funções principais: Exibir dados de operação, ler dados informados pelo usus
 import pandas as pd 
 from modules.arquivos import SaveDF
 import os
+import time
 
-def Options():
-    print("Insira a opção desejada: ")
+def Options(): #Funcao de opcoes 
+    print("Insira a opção desejada: ") 
     print("[1] Inserir\n[2] Pesquisar\n[3] Sair\n")
-    op = int(input("Opção: "))
+    op = int(input("Opção: ")) 
 
-    return op
+    return op #Retorna a opcao digitada pelo user
     
 def ReadInfo():
-    data = {'Nome' : "", 'Rua' : "", 'Numero' : "", 'Bairro' : "", 
-            'Cidade' : "", 'UF' : "", 'Telefone' : "", 'E-mail': ""}
+    data = {'Nome' : "", 'Rua' : "", 'Numero' : "", 'Bairro' : "",  
+            'Cidade' : "", 'UF' : "", 'Telefone' : "", 'E-mail': ""} #dicionario de informacoes
     
-    print("Insira os dados: ")
-    data['Nome'] = input("Nome: ")
-    data['Rua'] = input("Rua: ")
-    data['Numero'] = int (input("Número: "))
-    data['Bairro'] = input("Bairro: ")
-    data['Cidade'] = input("Cidade: ")
-    data['UF'] = input("UF: ")
-    data['Telefone'] = input("Telefone: ")
-    data['E-mail'] = input("E-mail: ")
+    print("Insira os dados: ") 
+    for info in data: #loop que insere os dados inseridos em cada chave do dicionario
+        data[info] = input(f"{info}: ").strip()
     
-    return data
+    return data #retorna o dicionario
 
 def Search(df): #função para pesquisar os dados
     termo = input("Digite o nome ou a matrícula do aluno: ") #pega o nome ou matricula
 
-    resultado = df[df['Nome'].str.contains(termo, case=False) | (df['Matrícula'].astype(str) == termo)] #ve se tem la
+    resultado = df[df['Nome'].str.contains(termo, case=False) | (df['Matrícula'].astype(str) == termo)] #confere se a matricula existe
 
     if resultado.empty: #se não tiver avisa
-        print("Nenhum aluno encontrado.")
-        return None
+        print("Nenhum aluno encontrado.") 
+        return None #retorna vazio
     
-    pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_columns', None) 
     pd.set_option('display.width', None)
     pd.set_option('display.max_colwidth', None)
 
@@ -52,10 +47,10 @@ def Search(df): #função para pesquisar os dados
     ("=====================================================================================================================")
     print(resultado.to_string(index=False)) # mostra o resultado 
 
-    #pergunta se o usuario quer editar os dados (troquei o lugar pra ca pq nn considerei que era certo essa verificação ficar la na main)
-    confir = False
-    if confirmation(confir):
-        menu2(df, resultado)
+    
+    confir = False #variavel booleana para edicao de dados
+    if confirmation(confir): #Se o usuario quiser editar
+        menu2(df, resultado) #Chama a funcao de opcoes exclusivas para edicao
     else:
         print("Voltando à página inicial...")
 
@@ -63,83 +58,89 @@ def Search(df): #função para pesquisar os dados
 
 #funcao com duas perguntas para duas verificações usadas no codigos
 def confirmation(confir):
-    pergunta = "\nDeseja editar os dados do aluno? (s/n): "
+    pergunta = "\nDeseja editar os dados do aluno? (s/n): " 
 
-    if confir:
+    if confir: #Caso confir for true
         pergunta = "\nTem certeza que deseja remover este aluno(a)? (s/n): "
 
-    while True:
-        op = input(pergunta).strip().lower()
+    while True: 
+        op = input(pergunta).strip().lower() #Remove os espaços em branco e deixa em caixa baixa
 
-        if op == 's':
+        if op == 's': #
             return True
         if op == 'n':
             return False
         
-        print("Valor inválido! Por favor informe outro.")
+        print("Valor inválido! Por favor, insira a resposta corretamente.")
 
 #menu exclusivo da area de edição
-def menu2(df, resultado):
+def menu2(df, resultado): #Funcao de menu da area de pesquisa de dados
     while True: 
         print("\nSelecione uma das opções abaixo: ")
         print("[1] Editar\n[2] Remover\n[3] Voltar ao início\n")
         op = int(input("Opção: "))
 
         match op:
-            case 1:
+            case 1: #Se opcao for 1, edicao
                 edit(df, resultado)
             case 2:
-                remove(df, resultado)
+                remove(df, resultado) #Se for 2, remove
                 break
-            case 3:
+            case 3: #Se for 3, retorna ao menu
                 print("Retornando ao menu principal...")
                 break
-            case _:
+            case _: #Caso default para tratamento de erros
                 print("Opção inválida! Escolha outra.")
 
-#função de edicação de dados
+#função de edicação de dados 
 def edit(df, resultado):
-    indice = resultado.index[0]
-    print(f"Editando o aluno(a) {df.at[indice, 'Nome']}")
+    indice = resultado.index[0] #Pega o indice do resultado, ou seja, do aluno pesquisado
+    print(f"Editando o aluno(a): {df.at[indice, 'Nome']}") 
 
     campos = ['Matrícula', 'Nome', 'Rua', 'Numero', 'Bairro', 'Cidade', 'UF', 'Telefone', 'E-mail']
 
     while True: #mostra os campos possiveis de editar 
         print("\nEscolha o campo que deseja editar: ")
-        for i, j in enumerate(campos, 1):
-            print(f"{i} - {j} Atual: {df.at[indice, j]}")
-        print("0 - Finalizar edição")
+        for i, j in enumerate(campos, 1): #Loop que numera os campos de 1 a 9, sendo 0 a opção para sair
+            print(f"{i} - {j} Atual: {df.at[indice, j]}") #Imprime no monitor as opções a serem escolhidas
+        print("0 - Finalizar edição") 
 
-        op = int(input("Opção: "))
+        op = int(input("Opção: ")) 
 
-        if op == 0:
-            SaveDF(df)
+
+        if op == 0: #Se a opcao for zero:
+            SaveDF(df) #Salva o Df e volta para o menu anterior
             print("Salvando edição... Finalizando...")
             break
 
-        #parte de seleção de valores de edição e edição em si
-        if 1 <= op <= len(campos):
-            campo = campos[op - 1]
-            novoValor = input(f"Digite um novo dado para {campo} Obs: se manter vazio não será alterado: ")
+        if op == 1: #Se a opcao for 1:
+            print("A matrícula do aluno não pode ser editada.") #A matricula n pode ser editada
+            time.sleep(2) #Delay de 2 segundos 
+            continue #Continua o loop
 
-            if novoValor.strip() != "":
-                df.at[indice, campo] = novoValor
-                print(f"{campo} atualizado!")
+        #parte de seleção de valores de edição e edição em si
+        if 1 <= op <= len(campos): # Enquanto opcao for maior que 1 e menor que o tamanho do array campos (9)
+            campo = campos[op - 1] #campo recebe a info do array - 1 campo, pois o array começa en zero 
+            novoValor = input(f"Digite um novo dado para {campo} Obs: se manter vazio não será alterado: ") #Usuario insere o novo dado
+
+            if novoValor.strip() != "": #Caso o novo valor nao for vazio, retirando os espaços em branco
+                df.at[indice, campo] = novoValor #Insere o novo valor no dataframe 
+                print(f"{campo} atualizado!") 
             else:
                 print("Valor mantido.")
         else:
             print("Opção inválida! informe outra.")
 
 #função para a remoção de alunos tambem com confimação
-def remove(df, resultado):
-    indice = resultado.index[0]
-    confir = True
-    if confirmation(confir):
-        df.drop(indice, inplace=True)
-        df.reset_index(drop=True, inplace=True)
-        SaveDF(df)
+def remove(df, resultado): 
+    indice = resultado.index[0] #Pega o indice do resultado, ou seja, do aluno pesquisado
+    confir = True #Confir fica true
+    if confirmation(confir): #Passa confir(true) para a funcao de confirmação
+        df.drop(indice, inplace=True) #Deleta a linha pelo index
+        df.reset_index(drop=True, inplace=True) #Reorganiza o index do dataframe apos exclusao
+        SaveDF(df) #Salva o DF
         print("Aluno removido com sucesso!")
-        return True
+        return True 
     else:
         print("Remoção cancelada.")
         return False
